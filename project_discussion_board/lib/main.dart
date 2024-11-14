@@ -1,9 +1,16 @@
 /*
 todo:
 -add navigation to topic page
+-dialogs and pickers
+-notifications
+-snackbars
+-local storage
+-cloud storage
+-http requests
 */
 
 import 'package:flutter/material.dart';
+import 'package:project_discussion_board/screens/board_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Homescreen',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -90,6 +97,14 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              print("More button pressed");
+            },
+          ),
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -125,6 +140,28 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+//class to preview a board
+class BoardPreview extends StatelessWidget{
+  const BoardPreview(Key? key, this.title);
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        print("test");
+      },
+      child: Container(
+      width: 100,
+      height: 200,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+      ),
+    ),
     );
   }
 }
