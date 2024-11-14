@@ -1,3 +1,8 @@
+/*
+todo:
+-add navigation to topic page
+*/
+
 import 'package:flutter/material.dart';
 
 void main() {
