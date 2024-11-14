@@ -6,6 +6,9 @@ import '../widgets/swipe_navigator.dart';
 import 'favorites_screen.dart';
 import 'profile_screen.dart';
 
+/// HomeScreen is the main screen displaying a list of boards.
+/// Users can access this screen from any other screen by selecting "Home" in the task bar.
+/// This screen includes a search bar, a grid of board cards, and the task bar at the bottom.
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,14 +22,16 @@ class HomeScreen extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.more_vert),
               onPressed: () {
-                // Placeholder for more actions
+                // Placeholder for additional options in the future
               },
             ),
           ],
         ),
         body: Column(
           children: [
+            // Search bar for filtering boards
             CustomSearchBar(),
+            // GridView showing list of board cards
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.all(8.0),
@@ -35,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
-                itemCount: 4,
+                itemCount: 4, // Placeholder count for boards
                 itemBuilder: (context, index) {
                   return BoardCard(boardName: 'Board ${index + 1}');
                 },
@@ -43,6 +48,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+        // TaskBar with 'Home' tab selected
         bottomNavigationBar: TaskBar(currentIndex: 1),
       ),
     );
