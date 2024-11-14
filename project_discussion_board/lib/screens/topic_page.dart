@@ -1,4 +1,0 @@
-/*
-todo:
--generate topic page
-*/ 
