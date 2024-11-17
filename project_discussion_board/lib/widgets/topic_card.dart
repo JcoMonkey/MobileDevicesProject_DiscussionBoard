@@ -7,6 +7,7 @@ class TopicCard extends StatelessWidget {
   final String topicTitle;  // Title of the topic to display
 
   // Constructor to initialize topic title
+  //TODO: make image link as a String a required parameter and connect it to firebase database
   TopicCard({required this.topicTitle});
 
   @override
