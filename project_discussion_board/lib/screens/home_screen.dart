@@ -17,7 +17,8 @@ class HomeScreen extends StatelessWidget {
       rightScreen: ProfileScreen(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Boards'),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text('HyperBoards'),
           actions: [
             IconButton(
               icon: Icon(Icons.more_vert),

@@ -16,6 +16,7 @@ class TopicScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Topics'),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           actions: [
             IconButton(
               icon: Icon(Icons.more_vert),

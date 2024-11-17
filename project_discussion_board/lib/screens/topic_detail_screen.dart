@@ -14,7 +14,7 @@ class TopicDetailScreen extends StatefulWidget {
 }
 
 class _TopicDetailScreenState extends State<TopicDetailScreen> {
-  final List<String> comments = ["test1", "test2"]; //TODO: give each topic it's own "screen" using firebase
+  final List<String> comments = []; //TODO: give each topic it's own "screen" using firebase
   final _commentController = TextEditingController();
 
   void _sendMessage() {
@@ -30,6 +30,7 @@ class _TopicDetailScreenState extends State<TopicDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.topicTitle),  // Display the title of the topic
       ),
       body: Column(
@@ -112,7 +113,7 @@ class CommentWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       padding: const EdgeInsets.all(8.0),
-      color: Colors.grey[100],
+      color: const Color.fromARGB(255, 190, 167, 194),
       child: Text(comment),
     );
   }

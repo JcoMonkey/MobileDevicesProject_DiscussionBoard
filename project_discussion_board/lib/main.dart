@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Discussion Board App', // Title of the app
       theme: ThemeData(
-        primarySwatch: Colors.blue, // Sets the primary color theme for the app
+        //colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+        primarySwatch: Colors.purple, // Sets the primary color theme for the app
       ),
       debugShowCheckedModeBanner: false,
       home: HomeScreen(), // Sets the HomeScreen as the initial route
