@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue, // Sets the primary color theme for the app
       ),
+      debugShowCheckedModeBanner: false,
       home: HomeScreen(), // Sets the HomeScreen as the initial route
     );
   }

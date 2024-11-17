@@ -4,22 +4,39 @@ import '../widgets/task_bar.dart';
 /// TopicDetailScreen displays detailed information about a selected topic
 /// and allows users to view and add comments. This screen includes the topic details,
 /// a list of comments, and an input field for adding new comments.
-class TopicDetailScreen extends StatelessWidget {
+class TopicDetailScreen extends StatefulWidget {
   final String topicTitle;
 
-  // Constructor to accept the topic title
   TopicDetailScreen({required this.topicTitle});
+
+  @override
+  State<TopicDetailScreen> createState() => _TopicDetailScreenState();
+}
+
+class _TopicDetailScreenState extends State<TopicDetailScreen> {
+  final List<String> comments = ["test1", "test2"]; //TODO: give each topic it's own "screen" using firebase
+  final _commentController = TextEditingController();
+
+  void _sendMessage() {
+    if (_commentController.text.trim().isEmpty) return;
+
+    setState(() {
+      comments.add(_commentController.text);
+    });
+    _commentController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(topicTitle),  // Display the title of the topic
+        title: Text(widget.topicTitle),  // Display the title of the topic
       ),
       body: Column(
         children: [
           // Display the main content/details of the topic
-          Expanded(
+          SizedBox(
+            height: 120,
             child: ListView(
               padding: const EdgeInsets.all(8.0),
               children: [
@@ -28,7 +45,7 @@ class TopicDetailScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   color: Colors.grey[200],
                   child: Text(
-                    'Details about $topicTitle. This is where the main content of the topic will go.',
+                    'Details about ${widget.topicTitle}. This is where the main content of the topic will go.',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -38,13 +55,19 @@ class TopicDetailScreen extends StatelessWidget {
                   'Comments',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
-                // Placeholder comments
-                CommentWidget(comment: 'This is a comment.'),
-                CommentWidget(comment: 'Another comment goes here.'),
               ],
             ),
           ),
+          Expanded(
+            //height: 200,
+            child: ListView.builder(
+              itemCount: comments.length,
+              reverse: false, //Puts last message at the bottom
+              itemBuilder:(context, index) {
+                return CommentWidget(comment: comments[index]);
+              },
+          ),
+        ),
           // Input field for adding new comments
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -52,6 +75,7 @@ class TopicDetailScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: _commentController,
                     decoration: InputDecoration(
                       hintText: 'Add a comment...',
                       border: OutlineInputBorder(
@@ -63,7 +87,7 @@ class TopicDetailScreen extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () {
-                    // Placeholder for sending a comment
+                    _sendMessage();
                   },
                 ),
               ],
