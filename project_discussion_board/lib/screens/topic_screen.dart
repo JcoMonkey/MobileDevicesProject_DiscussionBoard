@@ -8,7 +8,15 @@ import 'home_screen.dart';
 /// TopicScreen displays a list of topics within a selected board.
 /// Users can access this screen from the board or home screen.
 /// This screen includes a search bar, a grid of topic cards, and the task bar at the bottom.
-class TopicScreen extends StatelessWidget {
+class TopicScreen extends StatefulWidget {
+  
+  @override
+  State<TopicScreen> createState() => _TopicScreenState();
+}
+
+class _TopicScreenState extends State<TopicScreen> {
+  List<String> topicList = ['Topic 1', 'Topic 2', 'Topic 3'];
+
   @override
   Widget build(BuildContext context) {
     return SwipeNavigator(
@@ -39,9 +47,9 @@ class TopicScreen extends StatelessWidget {
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
-                itemCount: 6, // Placeholder count for topics
+                itemCount: topicList.length, // Placeholder count for topics
                 itemBuilder: (context, index) {
-                  return TopicCard(topicTitle: 'Topic ${index + 1}');
+                  return TopicCard(topicTitle: topicList[index]);
                 },
               ),
             ),
@@ -49,7 +57,79 @@ class TopicScreen extends StatelessWidget {
         ),
         // TaskBar with 'Home' tab selected
         bottomNavigationBar: TaskBar(currentIndex: 1),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () async {
+            String newTopic = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddTopic();
+              },
+            );
+            setState(() {
+              topicList.add(newTopic);  
+            });
+            final snackbar = SnackBar(
+              content: Text('Topic created'),
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {
+                  // TODO: Undo the action when the user taps 'Undo' 
+                  print('Undo action');
+                },
+              ),
+            );
+            // Show the SnackBar
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          }
+        ),
       ),
+    );
+  }
+}
+
+// Creates a dialog that allows the creation of a new topic
+class AddTopic extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+  final _textController = TextEditingController();
+  AddTopic({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Add Topic"),
+      content: Form(
+        key: _formKey,
+        child: TextFormField(
+          controller: _textController,
+          decoration: InputDecoration(
+            labelText: "Title",
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Please enter a title";
+            }
+            return null;
+          },
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+          child: Text("Cancel"),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              Navigator.of(context).pop(_textController.text); // Return the text
+            }
+          },
+          child: Text("Submit"),
+        ),
+      ],
     );
   }
 }
