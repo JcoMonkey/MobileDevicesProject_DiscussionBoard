@@ -3,6 +3,7 @@ import 'screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 
 /// Main entry point of the app, setting up the root widget and initial route.
@@ -13,7 +14,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAuth.instance.signInAnonymously();
-  runApp(MyApp());
+  runApp(
+    MyApp()
+  );
 }
 
 /// MyApp is the root widget of the application.
@@ -33,3 +36,15 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// Change theme from anywhere in the app
+// class ThemeProvider with ChangeNotifier {
+//   MaterialColor _primarySwatch = Colors.blue;
+
+//   MaterialColor get primarySwatch => _primarySwatch;
+
+//   void changePrimarySwatch(MaterialColor color) {
+//     _primarySwatch = color;
+//     notifyListeners(); // Notify listeners to rebuild the widgets that depend on this value
+//   }
+// }

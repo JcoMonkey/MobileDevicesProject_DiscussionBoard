@@ -14,6 +14,7 @@ This project lets users browse through boards, topics, and profiles. For smooth 
 - **Navigation:**
   - Swipe left and right to move between screens.
   - A task bar for navigating between Favorites, Home, and Profile screens.
+  - Snackbars for quality of life.
 
 - **Search Bar:**
   - Reusable search bar for filtering boards and topics.
@@ -21,6 +22,11 @@ This project lets users browse through boards, topics, and profiles. For smooth 
 - **Dynamic Content:**
   - Tap on boards to view related topics.
   - Tap on topics to view detailed information and add comments.
+  - Tap on the add button to add a new topic and enter a title in the dialog.
+
+- **Cloud Storage:**
+  - Boards are saved in the cloud
+
 
 ————————————————————————————————————————
 
