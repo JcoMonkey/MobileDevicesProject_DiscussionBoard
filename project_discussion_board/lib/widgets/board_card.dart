@@ -10,6 +10,17 @@ class BoardCard extends StatelessWidget {
   // Constructor to initialize board name
   BoardCard({required this.boardName, required this.boardImageURL});
 
+
+  // Convert a map into a BoardCard object
+  factory BoardCard.fromMap(Map<String, dynamic> map)
+  {
+    return BoardCard(
+      boardName: map['boardName'],
+      boardImageURL: map['imageURL'],
+    );
+  }
+    
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

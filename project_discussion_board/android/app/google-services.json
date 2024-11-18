@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "954946793574",
+    "project_id": "discussionboarddatabase",
+    "storage_bucket": "discussionboarddatabase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954946793574:android:05b2cc8d093193a2817da7",
+        "android_client_info": {
+          "package_name": "com.discussionBoardDatabase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtPAtu1oZmkVnvmJtDcela-7DchtXEiTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
