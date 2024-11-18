@@ -31,11 +31,18 @@ This project lets users browse through boards, topics, and profiles. For smooth 
 - Have a Android device or Android emulator.
 
 ### Installation
+```
 - git clone https://github.com/JcoMonkey/MobileDevicesProject_DiscussionBoard_DanielFolino_JericoRobles_ZhaojunLi_WingyatFan_OmarSafi.git
+```
+```
 - cd discussion-board-app
+```
+```
 - flutter pub get
+```
+```
 - flutter run
-
+```
 ————————————————————————————————————————
 
 ## Contributing
