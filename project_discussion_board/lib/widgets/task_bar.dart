@@ -6,28 +6,28 @@ import '../screens/profile_screen.dart';
 /// TaskBar is a BottomNavigationBar widget used in multiple screens.
 /// It provides navigation between Favorites, Home, and Profile screens.
 class TaskBar extends StatelessWidget {
-  final int currentIndex;  // Index of the currently selected tab
+  final int currentIndex; // Index of the currently selected tab
 
-  TaskBar({this.currentIndex = 1}); // Default to 'Home' tab
+  const TaskBar({super.key, this.currentIndex = 1}); // Default to 'Home' tab
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      items: [
+      items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.star),  // Icon for Favorites tab
+          icon: Icon(Icons.star), // Icon for Favorites tab
           label: 'Favorites',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),  // Icon for Home tab
+          icon: Icon(Icons.home), // Icon for Home tab
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),  // Icon for Profile tab
+          icon: Icon(Icons.person), // Icon for Profile tab
           label: 'Profile',
         ),
       ],
-      currentIndex: currentIndex,  // Set the selected tab
+      currentIndex: currentIndex, // Set the selected tab
       onTap: (index) {
         if (index == 0 && currentIndex != 0) {
           Navigator.pushReplacement(
@@ -38,7 +38,7 @@ class TaskBar extends StatelessWidget {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
-                (route) => false, // Clears the entire navigation stack
+            (route) => false, // Clears the entire navigation stack
           );
         } else if (index == 2 && currentIndex != 2) {
           Navigator.pushReplacement(

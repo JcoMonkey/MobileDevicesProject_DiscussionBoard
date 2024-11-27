@@ -10,6 +10,7 @@ String favColor = "blue";
 /// Users can access this screen by selecting "Profile" in the task bar.
 /// This screen includes a placeholder for profile content and the task bar at the bottom.
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +18,10 @@ class ProfileScreen extends StatelessWidget {
       leftScreen: HomeScreen(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Profile'),
+          title: const Text('Profile'),
           actions: [
             IconButton(
-              icon: Icon(Icons.more_vert),
+              icon: const Icon(Icons.more_vert),
               onPressed: () {
                 // Placeholder for additional options in the future
               },
@@ -31,21 +32,18 @@ class ProfileScreen extends StatelessWidget {
         body: Center(
           child: Text(
             'Profile page content will go here. Fav color is $favColor', //TODO: update when you click the action button and not just when you change page
-            style: TextStyle(fontSize: 18, color: Colors.grey),
+            style: const TextStyle(fontSize: 18, color: Colors.grey),
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.format_paint_rounded),
-          onPressed: () {
-            showDialog(
-              context: context, 
-              builder: (BuildContext context)
-              {
-                return ChangeThemeColor();
-              }
-            );
-          }
-        ),
+            child: const Icon(Icons.format_paint_rounded),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ChangeThemeColor();
+                  });
+            }),
         // TaskBar with 'Profile' tab selected
         bottomNavigationBar: TaskBar(currentIndex: 2),
       ),
@@ -55,39 +53,37 @@ class ProfileScreen extends StatelessWidget {
 
 // Changes theme color
 class ChangeThemeColor extends StatefulWidget {
-
-  ChangeThemeColor({super.key});
+  const ChangeThemeColor({super.key});
 
   @override
   State<ChangeThemeColor> createState() => _ChangeThemeColorState();
 }
 
 class _ChangeThemeColorState extends State<ChangeThemeColor> {
-
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-        title: const Text('Select color'),
-        children: <Widget>[
-          SimpleDialogOption(
-            onPressed: () {
-              setState(() {
-                favColor = "purple";
-              });
-              Navigator.pop(context);
-            },
-            child: const Text('Purple'),
-          ),
-          SimpleDialogOption(
-            onPressed: () {
-              setState(() {
-                favColor = "indigo";
-              });
-              Navigator.pop(context); 
-            },
-            child: const Text('Indigo'),
-          ),
-        ],
-      );
+      title: const Text('Select color'),
+      children: <Widget>[
+        SimpleDialogOption(
+          onPressed: () {
+            setState(() {
+              favColor = "purple";
+            });
+            Navigator.pop(context);
+          },
+          child: const Text('Purple'),
+        ),
+        SimpleDialogOption(
+          onPressed: () {
+            setState(() {
+              favColor = "indigo";
+            });
+            Navigator.pop(context);
+          },
+          child: const Text('Indigo'),
+        ),
+      ],
+    );
   }
 }

@@ -11,13 +11,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// Users can access this screen from any other screen by selecting "Home" in the task bar.
 /// This screen includes a search bar, a grid of board cards, and the task bar at the bottom.
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   //old test variables
   // late List<String> boardCategories = ['Gaming', 'Science', 'Art', 'Sports'];
   // late List<String> boardImageURLs = [
@@ -31,19 +31,22 @@ class _HomeScreenState extends State<HomeScreen> {
   //fills boardList
   Future<void> getBoards() async {
     final QuerySnapshot snapshot =
-    await FirebaseFirestore.instance.collection('boardCategories').get();
+        await FirebaseFirestore.instance.collection('boardCategories').get();
 
     setState(() {
       boardList = snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
-        return BoardCard.fromMap(data);
+        return BoardCard(
+          boardId: doc.id,
+          boardName: data['boardName'],
+          boardImageURL: data['imageURL'],
+        );
       }).toList();
     });
   }
 
   @override
-  void initState()
-  {
+  void initState() {
     super.initState();
     getBoards();
   }
@@ -56,10 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text('HyperBoards'),
+          title: const Text('HyperBoards'),
           actions: [
             IconButton(
-              icon: Icon(Icons.more_vert),
+              icon: const Icon(Icons.more_vert),
               onPressed: () {
                 // Placeholder for additional options in the future
               },
@@ -74,15 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.all(8.0),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
                 itemCount: boardList.length, // Placeholder count for boards
                 itemBuilder: (context, index) {
-                  // return BoardCard(boardName: 'Board ${index + 1}');
-                  return BoardCard(boardName: boardList[index].boardName,boardImageURL: boardList[index].boardImageURL); //this is a bit redundant and silly, will fix later
+                  return boardList[index];
                 },
               ),
             ),

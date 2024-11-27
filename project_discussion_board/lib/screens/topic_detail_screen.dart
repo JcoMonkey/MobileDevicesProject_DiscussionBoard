@@ -7,14 +7,15 @@ import '../widgets/task_bar.dart';
 class TopicDetailScreen extends StatefulWidget {
   final String topicTitle;
 
-  TopicDetailScreen({required this.topicTitle});
+  const TopicDetailScreen({super.key, required this.topicTitle});
 
   @override
   State<TopicDetailScreen> createState() => _TopicDetailScreenState();
 }
 
 class _TopicDetailScreenState extends State<TopicDetailScreen> {
-  final List<String> comments = []; //TODO: give each topic it's own "screen" using firebase
+  final List<String> comments =
+      []; //TODO: give each topic it's own "screen" using firebase
   final _commentController = TextEditingController();
 
   void _sendMessage() {
@@ -31,7 +32,7 @@ class _TopicDetailScreenState extends State<TopicDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.topicTitle),  // Display the title of the topic
+        title: Text(widget.topicTitle), // Display the title of the topic
       ),
       body: Column(
         children: [
@@ -47,12 +48,12 @@ class _TopicDetailScreenState extends State<TopicDetailScreen> {
                   color: Colors.grey[200],
                   child: Text(
                     'Details about ${widget.topicTitle}. This is where the main content of the topic will go.',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Section heading for comments
-                Text(
+                const Text(
                   'Comments',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
@@ -64,11 +65,11 @@ class _TopicDetailScreenState extends State<TopicDetailScreen> {
             child: ListView.builder(
               itemCount: comments.length,
               reverse: false, //Puts last message at the bottom
-              itemBuilder:(context, index) {
+              itemBuilder: (context, index) {
                 return CommentWidget(comment: comments[index]);
               },
+            ),
           ),
-        ),
           // Input field for adding new comments
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -86,7 +87,7 @@ class _TopicDetailScreenState extends State<TopicDetailScreen> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () {
                     _sendMessage();
                   },
@@ -106,7 +107,7 @@ class _TopicDetailScreenState extends State<TopicDetailScreen> {
 class CommentWidget extends StatelessWidget {
   final String comment;
 
-  CommentWidget({required this.comment});
+  const CommentWidget({super.key, required this.comment});
 
   @override
   Widget build(BuildContext context) {

@@ -8,16 +8,18 @@ import 'home_screen.dart';
 /// Users can navigate to this screen by clicking on the "Favorites" icon in the task bar or by swiping.
 /// This screen includes a search bar, a placeholder message for favorites, and the task bar at the bottom.
 class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SwipeNavigator(
       rightScreen: HomeScreen(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Favorites'),
+          title: const Text('Favorites'),
           actions: [
             IconButton(
-              icon: Icon(Icons.more_vert),
+              icon: const Icon(Icons.more_vert),
               onPressed: () {
                 // Placeholder for additional options in the future
               },
@@ -29,7 +31,7 @@ class FavoritesScreen extends StatelessWidget {
             // Search bar for filtering favorites
             CustomSearchBar(),
             // Placeholder text displayed when there are no favorites
-            Expanded(
+            const Expanded(
               child: Center(
                 child: Text(
                   'No favorites yet.',

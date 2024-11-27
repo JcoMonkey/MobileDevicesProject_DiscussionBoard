@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 /// Usage:
 ///   Wrap the main content of a screen in SwipeNavigator and specify the leftScreen and rightScreen parameters.
 class SwipeNavigator extends StatelessWidget {
-  final Widget child;  // The main content to be displayed within the SwipeNavigator
-  final Widget? leftScreen;  // Screen to navigate to on left swipe
+  final Widget
+      child; // The main content to be displayed within the SwipeNavigator
+  final Widget? leftScreen; // Screen to navigate to on left swipe
   final Widget? rightScreen; // Screen to navigate to on right swipe
 
-  SwipeNavigator({required this.child, this.leftScreen, this.rightScreen});
+  const SwipeNavigator(
+      {super.key, required this.child, this.leftScreen, this.rightScreen});
 
   @override
   Widget build(BuildContext context) {
