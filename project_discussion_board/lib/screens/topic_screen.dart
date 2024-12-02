@@ -12,41 +12,31 @@ class TopicScreen extends StatefulWidget {
   final String boardId;
   final String boardName;
 
-  const TopicScreen(
-      {super.key, required this.boardId, required this.boardName});
+  const TopicScreen({
+    super.key,
+    required this.boardId,
+    required this.boardName,
+  });
 
   @override
-  State<TopicScreen> createState() => _TopicScreenState();
+  State<TopicScreen> createState() => TopicScreenState();
 }
 
-class _TopicScreenState extends State<TopicScreen> {
-  /// Add a new topic to Firestore.
-  Future<void> _addNewTopic(String title) async {
-    final topicData = {
-      'title': title,
-      'timestamp': FieldValue.serverTimestamp(),
-    };
+class TopicScreenState extends State<TopicScreen> {
+  String _searchQuery = '';
 
-    await FirebaseFirestore.instance
-        .collection('boardCategories')
-        .doc(widget.boardId)
-        .collection('topics')
-        .add(topicData);
-  }
+  /// Filters topics based on the search query.
+  List<DocumentSnapshot> _filterTopics(
+      List<DocumentSnapshot> topics, String query) {
+    if (query.isEmpty) {
+      return topics;
+    }
 
-  Stream<List<Map<String, dynamic>>> _fetchTopics() {
-    return FirebaseFirestore.instance
-        .collection('boardCategories')
-        .doc(widget.boardId)
-        .collection('topics')
-        .orderBy('timestamp', descending: true)
-        .snapshots()
-        .map((snapshot) => snapshot.docs.map((doc) {
-              return {
-                'id': doc.id,
-                'title': doc.data()['title'],
-              };
-            }).toList());
+    return topics.where((doc) {
+      final title =
+          (doc.data() as Map<String, dynamic>)['title']?.toLowerCase();
+      return title != null && title.contains(query.toLowerCase());
+    }).toList();
   }
 
   @override
@@ -68,19 +58,37 @@ class _TopicScreenState extends State<TopicScreen> {
         ),
         body: Column(
           children: [
-            const CustomSearchBar(), // Search bar
+            // Search bar for filtering topics
+            CustomSearchBar(
+              onSearch: (query) {
+                setState(() {
+                  _searchQuery = query;
+                });
+              },
+            ),
             Expanded(
-              child: StreamBuilder<List<Map<String, dynamic>>>(
-                stream: _fetchTopics(),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('boardCategories')
+                    .doc(widget.boardId)
+                    .collection('topics')
+                    .orderBy('timestamp', descending: true)
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
                   if (snapshot.hasError) {
-                    return const Center(child: Text('Error loading topics.'));
+                    return const Center(
+                      child: Text('Error loading topics.'),
+                    );
                   }
 
-                  final topics = snapshot.data ?? [];
+                  final topics =
+                      _filterTopics(snapshot.data?.docs ?? [], _searchQuery);
+
                   if (topics.isEmpty) {
                     return const Center(child: Text('No topics available.'));
                   }
@@ -89,16 +97,17 @@ class _TopicScreenState extends State<TopicScreen> {
                     padding: const EdgeInsets.all(8.0),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, // Display in 3 columns
+                      crossAxisCount: 3,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                     ),
                     itemCount: topics.length,
                     itemBuilder: (context, index) {
                       final topic = topics[index];
+                      final data = topic.data() as Map<String, dynamic>;
                       return TopicCard(
-                        topicId: topic['id'],
-                        topicTitle: topic['title'],
+                        topicId: topic.id,
+                        topicTitle: data['title'],
                         boardId: widget.boardId,
                       );
                     },
@@ -120,7 +129,7 @@ class _TopicScreenState extends State<TopicScreen> {
               },
             );
             if (newTopic != null && newTopic.isNotEmpty) {
-              _addNewTopic(newTopic); // Save to Firestore
+              _addNewTopic(newTopic);
               final snackbar = SnackBar(
                 content: const Text('Topic created'),
                 action: SnackBarAction(
@@ -130,13 +139,25 @@ class _TopicScreenState extends State<TopicScreen> {
                   },
                 ),
               );
-              // Show the SnackBar
               ScaffoldMessenger.of(context).showSnackBar(snackbar);
             }
           },
         ),
       ),
     );
+  }
+
+  Future<void> _addNewTopic(String title) async {
+    final topicData = {
+      'title': title,
+      'timestamp': FieldValue.serverTimestamp(), // To sort topics
+    };
+
+    await FirebaseFirestore.instance
+        .collection('boardCategories')
+        .doc(widget.boardId)
+        .collection('topics')
+        .add(topicData);
   }
 }
 
@@ -169,15 +190,14 @@ class AddTopic extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop(); // Close the dialog
+            Navigator.of(context).pop();
           },
           child: const Text("Cancel"),
         ),
         ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              Navigator.of(context)
-                  .pop(_textController.text); // Return the text
+              Navigator.of(context).pop(_textController.text);
             }
           },
           child: const Text("Submit"),

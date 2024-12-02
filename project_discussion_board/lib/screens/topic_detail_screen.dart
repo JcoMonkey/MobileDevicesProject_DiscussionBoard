@@ -98,7 +98,7 @@ class _TopicDetailScreenState extends State<TopicDetailScreen> {
         ],
       ),
       // Optional TaskBar at the bottom (adjust as needed)
-      bottomNavigationBar: TaskBar(currentIndex: 1), // Example index
+      bottomNavigationBar: const TaskBar(currentIndex: 1), // Example index
     );
   }
 }

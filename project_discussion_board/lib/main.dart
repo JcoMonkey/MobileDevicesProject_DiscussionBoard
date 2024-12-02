@@ -3,7 +3,6 @@ import 'screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
 
 /// Main entry point of the app, setting up the root widget and initial route.
 /// This file initializes the Flutter app and loads the HomeScreen as the starting screen.
@@ -13,7 +12,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAuth.instance.signInAnonymously();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 /// MyApp is the root widget of the application.
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
             Colors.purple, // Sets the primary color theme for the app
       ),
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(), // Sets the HomeScreen as the initial route
+      home: const HomeScreen(), // Sets the HomeScreen as the initial route
     );
   }
 }

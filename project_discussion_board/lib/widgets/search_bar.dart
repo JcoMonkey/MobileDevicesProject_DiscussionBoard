@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 /// CustomSearchBar is a reusable widget providing a search input field.
 /// This widget is used in screens where search functionality is needed, such as HomeScreen and TopicScreen.
 class CustomSearchBar extends StatelessWidget {
-  const CustomSearchBar({super.key});
+  final ValueChanged<String> onSearch;
+
+  const CustomSearchBar({super.key, required this.onSearch});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
+        onChanged: onSearch,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
           hintText: 'Search...',

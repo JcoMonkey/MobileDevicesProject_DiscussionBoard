@@ -32,18 +32,18 @@ class TaskBar extends StatelessWidget {
         if (index == 0 && currentIndex != 0) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => FavoritesScreen()),
+            MaterialPageRoute(builder: (context) => const FavoritesScreen()),
           );
         } else if (index == 1 && currentIndex != 1) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
             (route) => false, // Clears the entire navigation stack
           );
         } else if (index == 2 && currentIndex != 2) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => ProfileScreen()),
+            MaterialPageRoute(builder: (context) => const ProfileScreen()),
           );
         }
       },

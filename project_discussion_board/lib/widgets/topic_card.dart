@@ -9,7 +9,7 @@ class TopicCard extends StatelessWidget {
   final String topicTitle;
   final String boardId;
 
-  // Constructor to initialize topic details
+// Constructor to initialize topic details
   const TopicCard({
     super.key,
     required this.topicId,
@@ -31,7 +31,7 @@ class TopicCard extends StatelessWidget {
       },
       onLongPress: () {
         // Show the popup menu on long press
-        _showContextMenu(context);
+        _showOptionsDialog(context);
       },
       child: Container(
         color: Colors.grey[300],
@@ -51,71 +51,34 @@ class TopicCard extends StatelessWidget {
     );
   }
 
-  /// Displays a popup menu for edit & delete options
-  void _showContextMenu(BuildContext context) async {
-    final result = await showMenu<String>(
-      context: context,
-      position: const RelativeRect.fromLTRB(100, 100, 0, 0),
-      items: [
-        const PopupMenuItem(value: 'edit', child: Text('Edit')),
-        const PopupMenuItem(value: 'delete', child: Text('Delete')),
-      ],
-    );
-
-    if (result == 'edit') {
-      _showEditDialog(context);
-    } else if (result == 'delete') {
-      _showDeleteDialog(context);
-    }
-  }
-
-  /// Displays a dialog to edit the topic title
-  void _showEditDialog(BuildContext context) {
-    final _textController = TextEditingController(text: topicTitle);
-
+  /// Displays a dialog for edit & delete options
+  void _showOptionsDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Edit Topic"),
-          content: TextFormField(
-            controller: _textController,
-            decoration: const InputDecoration(
-              labelText: "Title",
-              border: OutlineInputBorder(),
-            ),
+          title: const Text("Options"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text("Edit"),
+                onTap: () {
+                  Navigator.pop(context);
+                  _showEditDialog(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text("Delete"),
+                onTap: () {
+                  Navigator.pop(context);
+                  _showDeleteDialog(context);
+                },
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final newTitle = _textController.text.trim();
-                if (newTitle.isNotEmpty && newTitle != topicTitle) {
-                  try {
-                    await FirebaseFirestore.instance
-                        .collection('boardCategories')
-                        .doc(boardId)
-                        .collection('topics')
-                        .doc(topicId)
-                        .update({'title': newTitle});
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Topic updated to '$newTitle'")),
-                    );
-                  } catch (error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Failed to update topic")),
-                    );
-                  }
-                }
-                Navigator.pop(context);
-              },
-              child: const Text("Save"),
-            ),
-          ],
         );
       },
     );
@@ -131,13 +94,12 @@ class TopicCard extends StatelessWidget {
           content: const Text("Are you sure you want to delete this topic?"),
           actions: [
             TextButton(
-              child: const Text("Cancel"),
               onPressed: () {
                 Navigator.pop(context);
               },
+              child: const Text("Cancel"),
             ),
             ElevatedButton(
-              child: const Text("Delete"),
               onPressed: () async {
                 try {
                   await FirebaseFirestore.instance
@@ -148,7 +110,6 @@ class TopicCard extends StatelessWidget {
                       .delete();
 
                   Navigator.pop(context);
-
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Topic deleted")),
                   );
@@ -158,6 +119,62 @@ class TopicCard extends StatelessWidget {
                   );
                 }
               },
+              child: const Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Dislays dialog to edit the topic
+  void _showEditDialog(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
+    controller.text = topicTitle;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Edit Topic"),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(
+              labelText: "Title",
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final newTitle = controller.text.trim();
+                if (newTitle.isNotEmpty) {
+                  try {
+                    await FirebaseFirestore.instance
+                        .collection('boardCategories')
+                        .doc(boardId)
+                        .collection('topics')
+                        .doc(topicId)
+                        .update({'title': newTitle});
+
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Topic updated")),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Failed to update topic")),
+                    );
+                  }
+                }
+              },
+              child: const Text("Save"),
             ),
           ],
         );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_discussion_board/main.dart';
 import '../widgets/task_bar.dart';
 import '../widgets/swipe_navigator.dart';
 import 'home_screen.dart';
@@ -15,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwipeNavigator(
-      leftScreen: HomeScreen(),
+      leftScreen: const HomeScreen(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Profile'),
@@ -41,11 +40,11 @@ class ProfileScreen extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return ChangeThemeColor();
+                    return const ChangeThemeColor();
                   });
             }),
         // TaskBar with 'Profile' tab selected
-        bottomNavigationBar: TaskBar(currentIndex: 2),
+        bottomNavigationBar: const TaskBar(currentIndex: 2),
       ),
     );
   }

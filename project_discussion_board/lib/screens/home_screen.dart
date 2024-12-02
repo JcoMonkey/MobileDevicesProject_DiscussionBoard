@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/board_card.dart';
 import '../widgets/task_bar.dart';
 import '../widgets/swipe_navigator.dart';
 import 'favorites_screen.dart';
 import 'profile_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'topic_screen.dart';
+import 'topic_detail_screen.dart';
 
 /// HomeScreen is the main screen displaying a list of boards.
 /// Users can access this screen from any other screen by selecting "Home" in the task bar.
@@ -27,8 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
   //   'https://media.istockphoto.com/photos/closeup-of-sport-balls-and-equipment-picture-id1136317340?k=20&m=1136317340&s=612x612&w=0&h=vnhEFELSJ9lqKBc6QZHntFY7zco2zNohZJxJRu9dWjk=',
   // ];
   late List<BoardCard> boardList = [];
+  late List<Map<String, dynamic>> topicList = [];
+  late List<dynamic> filteredList = [];
+  bool isSearching = false;
 
-  //fills boardList
   Future<void> getBoards() async {
     final QuerySnapshot snapshot =
         await FirebaseFirestore.instance.collection('boardCategories').get();
@@ -42,6 +46,51 @@ class _HomeScreenState extends State<HomeScreen> {
           boardImageURL: data['imageURL'],
         );
       }).toList();
+
+      filteredList = boardList;
+    });
+  }
+
+  Future<void> getTopics() async {
+    final QuerySnapshot boardSnapshot =
+        await FirebaseFirestore.instance.collection('boardCategories').get();
+
+    List<Map<String, dynamic>> topics = [];
+    for (var boardDoc in boardSnapshot.docs) {
+      final boardId = boardDoc.id;
+      final QuerySnapshot topicSnapshot = await boardDoc.reference
+          .collection('topics')
+          .orderBy('timestamp', descending: true)
+          .get();
+
+      for (var topicDoc in topicSnapshot.docs) {
+        final topicData = topicDoc.data() as Map<String, dynamic>;
+        topics.add({
+          'id': topicDoc.id,
+          'boardId': boardId,
+          'title': topicData['title'],
+        });
+      }
+    }
+
+    setState(() {
+      topicList = topics;
+    });
+  }
+
+  /// Filter topics based on the search query
+  void _filterResults(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        isSearching = false;
+        filteredList = boardList;
+      } else {
+        isSearching = true;
+        filteredList = topicList
+            .where((topic) =>
+                topic['title'].toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
     });
   }
 
@@ -49,13 +98,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getBoards();
+    getTopics();
   }
 
   @override
   Widget build(BuildContext context) {
     return SwipeNavigator(
-      leftScreen: FavoritesScreen(),
-      rightScreen: ProfileScreen(),
+      leftScreen: const FavoritesScreen(),
+      rightScreen: const ProfileScreen(),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -71,28 +121,94 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: Column(
           children: [
-            // Search bar for filtering boards
-            CustomSearchBar(),
-            // GridView showing list of board cards
+            CustomSearchBar(onSearch: _filterResults),
             Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.all(8.0),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: boardList.length, // Placeholder count for boards
-                itemBuilder: (context, index) {
-                  return boardList[index];
-                },
-              ),
+              child: isSearching ? _buildTopicResults() : _buildBoardGrid(),
             ),
           ],
         ),
         // TaskBar with 'Home' tab selected
-        bottomNavigationBar: TaskBar(currentIndex: 1),
+        bottomNavigationBar: const TaskBar(currentIndex: 1),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const TopicScreen(
+                  boardId: "board_id_here",
+                  boardName: "board_name_here",
+                ),
+              ),
+            ).then((_) {
+              getTopics();
+            });
+          },
+        ),
       ),
+    );
+  }
+
+  /// Build the GridView for the boards
+  Widget _buildBoardGrid() {
+    if (boardList.isEmpty) {
+      return const Center(child: Text('No boards available.'));
+    }
+
+    return GridView.builder(
+      padding: const EdgeInsets.all(8.0),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+      itemCount: boardList.length,
+      itemBuilder: (context, index) {
+        return boardList[index];
+      },
+    );
+  }
+
+  /// Build the GridView for the topics
+  Widget _buildTopicResults() {
+    if (filteredList.isEmpty) {
+      return const Center(child: Text('No topics found.'));
+    }
+
+    return GridView.builder(
+      padding: const EdgeInsets.all(8.0),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+      itemCount: filteredList.length,
+      itemBuilder: (context, index) {
+        final topic = filteredList[index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TopicDetailScreen(
+                  topicTitle: topic['title'],
+                ),
+              ),
+            );
+          },
+          child: Container(
+            color: Colors.grey[300],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.image, size: 80, color: Colors.grey),
+                const SizedBox(height: 8),
+                Text(topic['title']),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
