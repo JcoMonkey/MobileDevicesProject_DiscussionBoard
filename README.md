@@ -66,3 +66,4 @@ Note: Ryan withdrew from the course
 
 Jerico's video: https://youtu.be/2uf8zW-hr4A
 Daniel's video: https://youtu.be/2xISjuTPIhw
+Omar's video: https://youtu.be/V-XXM_EL_Ds
