@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../widgets/task_bar.dart';
 import '../widgets/swipe_navigator.dart';
 import 'home_screen.dart';
-
-String favColor = "blue";
+import '../widgets/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 /// ProfileScreen displays the user's profile information.
 /// Users can access this screen by selecting "Profile" in the task bar.
@@ -13,6 +13,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return SwipeNavigator(
       leftScreen: const HomeScreen(),
       child: Scaffold(
@@ -30,7 +32,7 @@ class ProfileScreen extends StatelessWidget {
         // Centered placeholder text for the profile content
         body: Center(
           child: Text(
-            'Profile page content will go here. Fav color is $favColor', //TODO: update when you click the action button and not just when you change page
+            'Profile page content will go here. Theme color is ${themeProvider.primarySwatch}', //TODO: update when you click the action button and not just when you change page
             style: const TextStyle(fontSize: 18, color: Colors.grey),
           ),
         ),
@@ -61,13 +63,15 @@ class ChangeThemeColor extends StatefulWidget {
 class _ChangeThemeColorState extends State<ChangeThemeColor> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return SimpleDialog(
       title: const Text('Select color'),
       children: <Widget>[
         SimpleDialogOption(
           onPressed: () {
             setState(() {
-              favColor = "purple";
+              themeProvider.changePrimarySwatch(Colors.purple);
             });
             Navigator.pop(context);
           },
@@ -76,7 +80,7 @@ class _ChangeThemeColorState extends State<ChangeThemeColor> {
         SimpleDialogOption(
           onPressed: () {
             setState(() {
-              favColor = "indigo";
+              themeProvider.changePrimarySwatch(Colors.indigo);
             });
             Navigator.pop(context);
           },

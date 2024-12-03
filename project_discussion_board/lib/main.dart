@@ -3,6 +3,8 @@ import 'screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'widgets/theme_provider.dart';
 
 /// Main entry point of the app, setting up the root widget and initial route.
 /// This file initializes the Flutter app and loads the HomeScreen as the starting screen.
@@ -12,7 +14,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAuth.instance.signInAnonymously();
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 /// MyApp is the root widget of the application.
@@ -23,12 +30,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       title: 'Discussion Board App', // Title of the app
       theme: ThemeData(
         //colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
         primarySwatch:
-            Colors.purple, // Sets the primary color theme for the app
+          themeProvider.primarySwatch, // Sets the primary color theme for the app
       ),
       debugShowCheckedModeBanner: false,
       home: const HomeScreen(), // Sets the HomeScreen as the initial route
@@ -36,14 +45,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Change theme from anywhere in the app
-// class ThemeProvider with ChangeNotifier {
-//   MaterialColor _primarySwatch = Colors.blue;
-
-//   MaterialColor get primarySwatch => _primarySwatch;
-
-//   void changePrimarySwatch(MaterialColor color) {
-//     _primarySwatch = color;
-//     notifyListeners(); // Notify listeners to rebuild the widgets that depend on this value
-//   }
-// }
