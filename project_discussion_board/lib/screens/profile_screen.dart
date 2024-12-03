@@ -4,6 +4,7 @@ import '../widgets/swipe_navigator.dart';
 import 'home_screen.dart';
 import '../widgets/theme_provider.dart';
 import 'package:provider/provider.dart';
+import '../widgets/color_picker.dart';
 
 /// ProfileScreen displays the user's profile information.
 /// Users can access this screen by selecting "Profile" in the task bar.
@@ -53,31 +54,3 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-class ChangeThemeColor extends StatelessWidget {
-  const ChangeThemeColor({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
-    return SimpleDialog(
-      title: const Text('Select color'),
-      children: <Widget>[
-        SimpleDialogOption(
-          onPressed: () {
-            themeProvider.changePrimarySwatch(Colors.purple);
-            Navigator.pop(context);
-          },
-          child: const Text('Purple'),
-        ),
-        SimpleDialogOption(
-          onPressed: () {
-            themeProvider.changePrimarySwatch(Colors.indigo);
-            Navigator.pop(context);
-          },
-          child: const Text('Indigo'),
-        ),
-      ],
-    );
-  }
-}

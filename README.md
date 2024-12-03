@@ -63,3 +63,6 @@ Download the apk from the release page.
 Authors: Zhaojun Li, Jerico Robles, Daniel Folino, Omar Safi, Ryan Fan (withdrew)
 
 Note: Ryan withdrew from the course
+
+Jerico's video: https://youtu.be/2uf8zW-hr4A
+Daniel's video: https://youtu.be/2xISjuTPIhw
