@@ -60,4 +60,6 @@ Download the apk from the release page.
 
 ## Contributing
 
-Authors: Zhaojun Li, Jerico Robles, Daniel Folino, Omar Safi, Ryan Fan
+Authors: Zhaojun Li, Jerico Robles, Daniel Folino, Omar Safi, Ryan Fan (withdrew)
+
+Note: Ryan withdrew from the course

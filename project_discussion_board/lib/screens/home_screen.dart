@@ -99,16 +99,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-
   Widget build(BuildContext context) {
-    //final themeProvider = Provider.of<ThemeProvider>(context);
-
     return SwipeNavigator(
       leftScreen: const FavoritesScreen(),
       rightScreen: const ProfileScreen(),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          backgroundColor: Theme.of(context).primaryColor,
           title: const Text('HyperBoards'),
           actions: [
             IconButton(

@@ -30,17 +30,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-
-    return MaterialApp(
-      title: 'Discussion Board App', // Title of the app
-      theme: ThemeData(
-        //colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
-        primarySwatch:
-          themeProvider.primarySwatch, // Sets the primary color theme for the app
-      ),
-      debugShowCheckedModeBanner: false,
-      home: const HomeScreen(), // Sets the HomeScreen as the initial route
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          title: 'Discussion Board App', // Title of the app
+          theme: ThemeData(
+            //colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+            primarySwatch:
+              themeProvider.primarySwatch, // Sets the primary color theme for the app
+          ),
+          debugShowCheckedModeBanner: false,
+          home: const HomeScreen(), // Sets the HomeScreen as the initial route
+        );
+      }
     );
   }
 }

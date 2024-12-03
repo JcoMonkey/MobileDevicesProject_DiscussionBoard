@@ -16,6 +16,7 @@ class FavoritesScreen extends StatelessWidget {
       rightScreen: const HomeScreen(),
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
           title: const Text('Favorites'),
           actions: [
             IconButton(

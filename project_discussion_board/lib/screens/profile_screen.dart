@@ -19,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
       leftScreen: const HomeScreen(),
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
           title: const Text('Profile'),
           actions: [
             IconButton(
@@ -37,14 +38,14 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.format_paint_rounded),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const ChangeThemeColor();
-                  });
-            }),
+          child: const Icon(Icons.format_paint_rounded),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const ChangeThemeColor();
+              });
+          }),
         // TaskBar with 'Profile' tab selected
         bottomNavigationBar: const TaskBar(currentIndex: 2),
       ),
@@ -52,36 +53,26 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-// Changes theme color
-class ChangeThemeColor extends StatefulWidget {
+class ChangeThemeColor extends StatelessWidget {
   const ChangeThemeColor({super.key});
 
   @override
-  State<ChangeThemeColor> createState() => _ChangeThemeColorState();
-}
-
-class _ChangeThemeColorState extends State<ChangeThemeColor> {
-  @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
     return SimpleDialog(
       title: const Text('Select color'),
       children: <Widget>[
         SimpleDialogOption(
           onPressed: () {
-            setState(() {
-              themeProvider.changePrimarySwatch(Colors.purple);
-            });
+            themeProvider.changePrimarySwatch(Colors.purple);
             Navigator.pop(context);
           },
           child: const Text('Purple'),
         ),
         SimpleDialogOption(
           onPressed: () {
-            setState(() {
-              themeProvider.changePrimarySwatch(Colors.indigo);
-            });
+            themeProvider.changePrimarySwatch(Colors.indigo);
             Navigator.pop(context);
           },
           child: const Text('Indigo'),
