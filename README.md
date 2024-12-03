@@ -65,6 +65,6 @@ Authors: Zhaojun Li, Jerico Robles, Daniel Folino, Omar Safi, Ryan Fan (withdrew
 Note: Ryan withdrew from the course
 
 Zhaojun's video: https://youtu.be/uGLvS3jXPaU
-Jerico's video: https://youtu.be/2uf8zW-hr4A
+Jerico's video: https://youtu.be/2uf8zW-hr4A (longer demo video here: https://youtu.be/ffOaHXRFqtI)
 Daniel's video: https://youtu.be/2xISjuTPIhw
 Omar's video: https://youtu.be/V-XXM_EL_Ds
