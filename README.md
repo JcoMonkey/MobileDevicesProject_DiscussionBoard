@@ -37,6 +37,8 @@ This project lets users browse through boards, topics, and profiles. For smooth 
 - Have a Android device or Android emulator.
 
 ### Installation
+
+**Option 1: With command line**
 ```
 - git clone https://github.com/JcoMonkey/MobileDevicesProject_DiscussionBoard_DanielFolino_JericoRobles_ZhaojunLi_WingyatFan_OmarSafi.git
 ```
@@ -49,6 +51,10 @@ This project lets users browse through boards, topics, and profiles. For smooth 
 ```
 - flutter run
 ```
+
+**Option 2: With APK**
+Download the apk included in the submitted file.
+
 ————————————————————————————————————————
 
 ## Contributing
