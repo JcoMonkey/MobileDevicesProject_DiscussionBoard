@@ -54,7 +54,7 @@ This project lets users browse through boards, topics, and profiles. For smooth 
 
 **Option 2: With APK**
 
-Download the apk included in the submitted file.
+Download the apk from the release page.
 
 ————————————————————————————————————————
 
